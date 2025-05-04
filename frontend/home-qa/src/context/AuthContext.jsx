@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -21,7 +23,7 @@ export const AuthProvider = ({ children }) => {
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
           // Verify token with backend
-          const response = await axios.get('http://localhost:5000/api/auth/profile');
+          const response = await axios.get(`${API_BASE_URL}/api/auth/profile`);
           if (response.data) {
             setUser(response.data);
           } else {
@@ -47,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
         email,
         password
       });
@@ -75,7 +77,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post(`${API_BASE_URL}/api/auth/register`, {
         name,
         email,
         password

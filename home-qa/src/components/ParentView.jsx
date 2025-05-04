@@ -12,6 +12,8 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 function ParentView() {
   const { studentId } = useParams();
   const [answers, setAnswers] = useState({});
@@ -23,11 +25,11 @@ function ParentView() {
     const fetchData = async () => {
       try {
         // Fetch questions
-        const questionsResponse = await axios.get('http://localhost:5000/api/questions');
+        const questionsResponse = await axios.get(`${API_BASE_URL}/api/questions`);
         setQuestions(questionsResponse.data);
 
         // Fetch student's answers
-        const answersResponse = await axios.get(`http://localhost:5000/api/answers/${studentId}`);
+        const answersResponse = await axios.get(`${API_BASE_URL}/api/answers/${studentId}`);
         const answersMap = answersResponse.data.reduce((acc, curr) => {
           acc[curr.questionId] = curr.answer;
           return acc;

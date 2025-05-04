@@ -16,6 +16,8 @@ import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
 import { requestNotificationPermission, showNotification } from '../utils/notifications';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 function StudentMessages({ studentId }) {
   const [messages, setMessages] = useState([]);
   const [reply, setReply] = useState('');
@@ -37,7 +39,7 @@ function StudentMessages({ studentId }) {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/messages/${studentId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/messages/${studentId}`);
         const newMessages = response.data;
         
         // Check for new unread messages and show notifications
@@ -62,7 +64,7 @@ function StudentMessages({ studentId }) {
         // Mark unread messages as read
         const unreadMessages = newMessages.filter(msg => msg.status === 'unread');
         for (const msg of unreadMessages) {
-          await axios.patch(`http://localhost:5000/api/messages/${msg._id}/read`);
+          await axios.patch(`${API_BASE_URL}/api/messages/${msg._id}/read`);
         }
       } catch (error) {
         console.error('Error fetching messages:', error);
@@ -84,7 +86,7 @@ function StudentMessages({ studentId }) {
       setSendingReply(true);
       setError(null);
 
-      const response = await axios.post(`http://localhost:5000/api/messages/${messageId}/reply`, {
+      const response = await axios.post(`${API_BASE_URL}/api/messages/${messageId}/reply`, {
         reply: reply.trim()
       });
 

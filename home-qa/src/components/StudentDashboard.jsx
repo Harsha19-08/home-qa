@@ -16,6 +16,8 @@ import {
 import QRCode from 'qrcode.react';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 function StudentDashboard() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -39,7 +41,7 @@ function StudentDashboard() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/questions');
+        const response = await axios.get(`${API_BASE_URL}/api/questions`);
         console.log('Fetched questions:', response.data);
         setQuestions(response.data);
         // Initialize answers object with empty strings for each question
@@ -93,7 +95,7 @@ function StudentDashboard() {
       console.log('Sending data:', payload);
 
       // Send the request
-      const response = await axios.post('http://localhost:5000/api/answers', payload);
+      const response = await axios.post(`${API_BASE_URL}/api/answers`, payload);
 
       console.log('Server response:', response.data);
       setSaved(true);
